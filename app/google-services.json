@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "322915511228",
+    "firebase_url": "https://courses-scheduler.firebaseio.com",
+    "project_id": "courses-scheduler",
+    "storage_bucket": "courses-scheduler.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:322915511228:android:7f20f8d5fe31d4505e19b9",
+        "android_client_info": {
+          "package_name": "ir.saatgroup.coursesscheduler"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "322915511228-ueskgl8pbpt0htb8nv5rfquq6mb7cf1v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ir.saatgroup.coursesscheduler",
+            "certificate_hash": "858aa2e98d551840f874665282477d73fdfde18d"
+          }
+        },
+        {
+          "client_id": "322915511228-nhau69g6rdgqnu7on2lrl543uvuesq1m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCDn_NLVMqdUbjV3pFvNGGwpmOSSA5sBwE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "322915511228-nhau69g6rdgqnu7on2lrl543uvuesq1m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
