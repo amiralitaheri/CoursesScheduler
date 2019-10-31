@@ -1,4 +1,4 @@
-package ir.saatgroup.coursesscheduler.auth
+package ir.saatgroup.coursesscheduler.data.auth
 
 import android.content.Context
 
