@@ -5,10 +5,29 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:context=".ui.SettingTabFragment">
-
-    <TextView
+    <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Hello"/>
+            android:layout_height="match_parent" android:visibility="visible">
+        <Button
+                android:text="@string/setting_button_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/setting_button_one"
+                android:gravity="start|center_vertical"
+                android:background="@android:color/white"
+        />
+        <Button
+                android:text="@string/setting_button_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/setting_button_two"
+                android:gravity="start|center_vertical"
+                android:background="@android:color/transparent"
+        />
+        <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" android:id="@+id/logout" android:visibility="visible"
+                tools:text="@string/logout" android:textColor="@color/secondaryTextColor"
+                android:background="@android:color/holo_red_light"/>
 
+    </LinearLayout>
 </FrameLayout>
