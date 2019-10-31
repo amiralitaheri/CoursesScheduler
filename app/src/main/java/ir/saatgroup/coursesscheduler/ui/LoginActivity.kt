@@ -19,7 +19,7 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         val auth = FirebaseAuth.getInstance()
         if (auth.currentUser != null) {
-            runMain();
+            runMain()
             Log.i("login","user logged in!!")
         } else {
             firebaseAuth()
@@ -51,8 +51,9 @@ class LoginActivity : AppCompatActivity() {
             val response = IdpResponse.fromResultIntent(data)
 
             if (resultCode == Activity.RESULT_OK) {
+                runMain()
                 // Successfully signed in
-                val user = FirebaseAuth.getInstance().currentUser
+                //val user = FirebaseAuth.getInstance().currentUser
                // val snack = Snackbar.make(findViewById<View>(R.id.rootLayout),"Logged In",Snackbar.LENGTH_LONG)
               //  snack.show()
             } else {
