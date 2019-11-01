@@ -22,5 +22,7 @@
     <string name="settings">Settings</string>
 
     <string name="Register">Register A Class</string>
+    <string name="teacher_add_success">Teacher added succesfully.</string>
+    <string name="snack_ERR">Something went wrong! Try again.</string>
 
 </resources>

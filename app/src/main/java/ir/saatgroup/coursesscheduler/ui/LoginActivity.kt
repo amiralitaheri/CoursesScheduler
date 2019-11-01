@@ -29,9 +29,9 @@ class LoginActivity : AppCompatActivity() {
 
     private fun runMain(){
         val i = Intent(this, MainActivity::class.java)
-
         i.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         startActivity(i)
+        Log.i("debug","running the main activity")
         this.finish()
     }
 

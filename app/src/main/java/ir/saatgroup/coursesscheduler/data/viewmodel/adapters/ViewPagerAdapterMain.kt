@@ -10,11 +10,11 @@ import java.lang.IndexOutOfBoundsException
 class ViewPagerAdapterMain (fm: FragmentManager,lc:Lifecycle) : FragmentStateAdapter(fm,lc){
 
     private val ITEM_COUNT = 5
-    private var teachersTabFragment =TeachersTabFragment()
-    private var classsesTabFragment = ClassesTabFragment()
-    private var mainTabFragment = MainTabFragment()
-    private var profileTabFragment = ProfileTabFragment()
-    private var settingTabFragment = SettingTabFragment()
+    private var teachersTabFragment =TeachersTabFragment.newInstance()
+    private var classesTabFragment = ClassesTabFragment.newInstance()
+    private var mainTabFragment = MainTabFragment.newInstance()
+    private var profileTabFragment = ProfileTabFragment.newInstance()
+    private var settingTabFragment = SettingTabFragment.newInstance()
 
     override fun getItemCount(): Int {
         return  ITEM_COUNT
@@ -23,7 +23,7 @@ class ViewPagerAdapterMain (fm: FragmentManager,lc:Lifecycle) : FragmentStateAda
     override fun createFragment(position: Int): Fragment {
         return when(position){
             0 -> teachersTabFragment
-            1 -> classsesTabFragment
+            1 -> classesTabFragment
             2 -> mainTabFragment
             3 -> profileTabFragment
             4 -> settingTabFragment
