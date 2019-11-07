@@ -1,8 +1,10 @@
 package ir.saatgroup.coursesscheduler.data.model
 
+import ir.saatgroup.coursesscheduler.utils.toId
+
 class Teacher() {
     lateinit var id: String
-    var name: String? = null
+    lateinit var name: String
     var degree: String? = null
     var discipline: String? = null
     var expertise: String? = null
@@ -11,8 +13,7 @@ class Teacher() {
     var email: String? = null
 
     constructor(
-        id: String,
-        name: String? = null,
+        name: String,
         degree: String? = null,
         discipline: String? = null,
         expertise: String? = null,
@@ -20,7 +21,7 @@ class Teacher() {
         img: String? = null,
         email: String? = null
     ):this(){
-        this.id = id
+        this.id = name.toId()
         this.name = name
         this.degree = degree
         this.discipline = discipline

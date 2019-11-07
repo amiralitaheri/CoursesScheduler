@@ -8,6 +8,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.tasks.Task
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 
@@ -22,10 +23,10 @@ object Repository {
     @SuppressLint("StaticFieldLeak")
     private val db = FirebaseFirestore.getInstance()
     private val user = FirebaseAuth.getInstance().currentUser
-    private val teachersLiveData = MutableLiveData<MutableSet<Teacher>>()
-    private val classesLiveData = MutableLiveData<MutableSet<Classes>>()
-    private val classInstancesLiveData = MutableLiveData<MutableSet<ClassInstances>>()
-    private val registeredClassesLiveData = MutableLiveData<MutableSet<ClassInstances>>()
+    private val teachersLiveData = MutableLiveData<MutableList<Teacher>>()
+    private val classesLiveData = MutableLiveData<MutableList<Classes>>()
+    private val classInstancesLiveData = MutableLiveData<MutableList<ClassInstances>>()
+    private val registeredClassesLiveData = MutableLiveData<MutableList<ClassInstances>>()
 
     fun setTeacher(teacher: Teacher): Task<Void> {
         val data = hashMapOf(
@@ -35,10 +36,18 @@ object Repository {
         return db.collection("allTeachers").document(user?.uid!!).set(data, SetOptions.merge())
     }
 
+    fun deleteTeacher(teacher: Teacher): Task<Void> {
+        teachersLiveData.value?.remove(teacher)
+        val updates = hashMapOf<String, Any>(
+            teacher.id to FieldValue.delete()
+        )
+        return db.collection("allTeachers").document(user?.uid!!).update(updates)
+    }
 
-    fun getTeachers(): LiveData<MutableSet<Teacher>> {
 
-        val teachers = mutableSetOf<Teacher>()
+    fun getTeachers(): LiveData<MutableList<Teacher>> {
+
+        val teachers = mutableListOf<Teacher>()
         db.collection("allTeachers").document(user?.uid!!).get()
             .addOnSuccessListener { documentSnapshot ->
 
@@ -48,13 +57,13 @@ object Repository {
                     for (innerKey in firebaseTeacher.keys) {
                         when (innerKey) {
                             "id" -> teacher.id = firebaseTeacher[innerKey] as String
-                            "name" -> teacher.name = firebaseTeacher[innerKey] as String?
+                            "name" -> teacher.name = firebaseTeacher[innerKey] as String
                             "degree" -> teacher.degree = firebaseTeacher[innerKey] as String?
                             "discipline" -> teacher.discipline = firebaseTeacher[innerKey] as String?
-                            "expertise" -> firebaseTeacher[innerKey] as String?
-                            "birthYear" -> firebaseTeacher[innerKey] as Int?
-                            "img" -> firebaseTeacher[innerKey] as String?
-                            "email" -> firebaseTeacher[innerKey] as String?
+                            "expertise" -> teacher.expertise = firebaseTeacher[innerKey] as String?
+                            "birthYear" -> teacher.birthYear = firebaseTeacher[innerKey] as Int?
+                            "img" -> teacher.img = firebaseTeacher[innerKey] as String?
+                            "email" -> teacher.email = firebaseTeacher[innerKey] as String?
                             else -> Log.e("firebase", "extra key value for teacher: $key , $innerKey")
                         }
                     }
@@ -77,8 +86,8 @@ object Repository {
         return db.collection("allClasses").document(user?.uid!!).set(data, SetOptions.merge())
     }
 
-    fun getClasses(): LiveData<MutableSet<Classes>> {
-        val classesSet = mutableSetOf<Classes>()
+    fun getClasses(): LiveData<MutableList<Classes>> {
+        val classesSet = mutableListOf<Classes>()
         db.collection("allClasses").document(user?.uid!!).get()
             .addOnSuccessListener { documentSnapshot ->
                 for (key in documentSnapshot.data!!.keys) {
@@ -108,6 +117,14 @@ object Repository {
         return classesLiveData
     }
 
+    fun deleteClasses(classes: Classes): Task<Void> {
+        classesLiveData.value?.remove(classes)
+        val updates = hashMapOf<String, Any>(
+            classes.id to FieldValue.delete()
+        )
+        return db.collection("allClasses").document(user?.uid!!).update(updates)
+    }
+
 
     fun setClassInstance(classInstances: ClassInstances): Task<Void> {
         val data = hashMapOf(
@@ -117,8 +134,8 @@ object Repository {
         return db.collection("allClassInstances").document(user?.uid!!).set(data, SetOptions.merge())
     }
 
-    fun getClassInstances(): LiveData<MutableSet<ClassInstances>> {
-        val classInstancesSet = mutableSetOf<ClassInstances>()
+    fun getClassInstances(): LiveData<MutableList<ClassInstances>> {
+        val classInstancesSet = mutableListOf<ClassInstances>()
         db.collection("allClassInstances").document(user?.uid!!).get()
             .addOnSuccessListener { documentSnapshot ->
                 for (key in documentSnapshot.data!!.keys) {
@@ -160,6 +177,14 @@ object Repository {
         return classInstancesLiveData
     }
 
+    fun deleteClassInstance(classInstance: ClassInstances): Task<Void> {
+        classInstancesLiveData.value?.remove(classInstance)
+        val updates = hashMapOf<String, Any>(
+            classInstance.id to FieldValue.delete()
+        )
+        return db.collection("allClassInstances").document(user?.uid!!).update(updates)
+    }
+
     fun registerClass(classInstances: ClassInstances): Task<Void> {
         val data = hashMapOf(
             classInstances.id to classInstances
@@ -168,8 +193,8 @@ object Repository {
         return db.collection("userClassInstances").document(user?.uid!!).set(data, SetOptions.merge())
     }
 
-    fun getRegisteredClasses(): LiveData<MutableSet<ClassInstances>> {
-        val classInstancesSet = mutableSetOf<ClassInstances>()
+    fun getRegisteredClasses(): LiveData<MutableList<ClassInstances>> {
+        val classInstancesSet = mutableListOf<ClassInstances>()
         db.collection("userClassInstances").document(user?.uid!!).get()
             .addOnSuccessListener { documentSnapshot ->
                 for (key in documentSnapshot.data!!.keys) {
@@ -209,6 +234,14 @@ object Repository {
             }
         registeredClassesLiveData.value = classInstancesSet
         return classInstancesLiveData
+    }
+
+    fun deleteRegisteredClass(classInstance: ClassInstances): Task<Void> {
+        registeredClassesLiveData.value?.remove(classInstance)
+        val updates = hashMapOf<String, Any>(
+            classInstance.id to FieldValue.delete()
+        )
+        return db.collection("userClassInstances").document(user?.uid!!).update(updates)
     }
 
 

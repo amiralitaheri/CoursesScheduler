@@ -1,4 +1,15 @@
 package ir.saatgroup.coursesscheduler.utils
 
-class Extensions {
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.annotation.LayoutRes
+
+
+fun ViewGroup.inflate(@LayoutRes layoutRes: Int, attachToRoot: Boolean = false): View {
+    return LayoutInflater.from(context).inflate(layoutRes, this, attachToRoot)
+}
+
+fun String.toId(): String {
+    return this.toLowerCase().replace(" ", "_")
 }

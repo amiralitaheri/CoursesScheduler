@@ -3,31 +3,27 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="match_parent" xmlns:app="http://schemas.android.com/apk/res-auto"
         tools:context=".ui.SettingTabFragment">
     <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent" android:visibility="visible">
-        <Button
-                android:text="@string/setting_button_1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/setting_button_one"
-                android:gravity="start|center_vertical"
-                android:background="@android:color/white"
-        />
-        <Button
-                android:text="@string/setting_button_2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/setting_button_two"
-                android:gravity="start|center_vertical"
-                android:background="@android:color/transparent"
-        />
-        <Button
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" android:id="@+id/logout" android:visibility="visible"
-                tools:text="@string/logout" android:textColor="@color/secondaryTextColor"
-                android:background="@android:color/holo_red_light"/>
+
+        <com.google.android.material.button.MaterialButton
+                android:id="@+id/logout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/logout"
+                android:textAppearance="?android:textAppearanceMedium"
+                style="@style/Widget.MaterialComponents.Button.TextButton"
+                android:layout_marginTop="8dp"
+                android:textColor= "@android:color/holo_red_dark"
+                />
+
 
     </LinearLayout>
+
+
+
 </FrameLayout>
