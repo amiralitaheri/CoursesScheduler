@@ -15,6 +15,7 @@ import ir.saatgroup.coursesscheduler.data.model.ClassInstances
 import ir.saatgroup.coursesscheduler.data.model.Classes
 import ir.saatgroup.coursesscheduler.data.model.Teacher
 import ir.saatgroup.coursesscheduler.data.model.Time
+
 import java.util.*
 
 object Repository {
@@ -24,11 +25,13 @@ object Repository {
     private val teachersLiveData = MutableLiveData<MutableSet<Teacher>>()
     private val classesLiveData = MutableLiveData<MutableSet<Classes>>()
     private val classInstancesLiveData = MutableLiveData<MutableSet<ClassInstances>>()
+    private val registeredClassesLiveData = MutableLiveData<MutableSet<ClassInstances>>()
 
-    fun setTeacher(teacher:Teacher): Task<Void> {
+    fun setTeacher(teacher: Teacher): Task<Void> {
         val data = hashMapOf(
             teacher.id to teacher
         )
+        teachersLiveData.value?.add(teacher)
         return db.collection("allTeachers").document(user?.uid!!).set(data, SetOptions.merge())
     }
 
@@ -38,11 +41,12 @@ object Repository {
         val teachers = mutableSetOf<Teacher>()
         db.collection("allTeachers").document(user?.uid!!).get()
             .addOnSuccessListener { documentSnapshot ->
-                for (key in documentSnapshot.data!!.keys){
+
+                for (key in documentSnapshot.data!!.keys) {
                     val firebaseTeacher = documentSnapshot.data!![key] as MutableMap<String, Objects>
                     val teacher = Teacher()
-                    for(innerKey in firebaseTeacher.keys){
-                        when(innerKey){
+                    for (innerKey in firebaseTeacher.keys) {
+                        when (innerKey) {
                             "id" -> teacher.id = firebaseTeacher[innerKey] as String
                             "name" -> teacher.name = firebaseTeacher[innerKey] as String?
                             "degree" -> teacher.degree = firebaseTeacher[innerKey] as String?
@@ -57,37 +61,38 @@ object Repository {
                     teachers.add(teacher)
                 }
             }
-            .addOnFailureListener{
-                Log.e("firebase","Failed to retrieve Teachers")
+            .addOnFailureListener {
+                Log.e("firebase", "Failed to retrieve Teachers")
             }
         teachersLiveData.value = teachers
-    return teachersLiveData
+        return teachersLiveData
     }
 
 
-    fun setClass(classes : Classes): Task<Void> {
+    fun setClass(classes: Classes): Task<Void> {
         val data = hashMapOf(
             classes.id to classes
         )
+        classesLiveData.value?.add(classes)
         return db.collection("allClasses").document(user?.uid!!).set(data, SetOptions.merge())
     }
 
-    fun getClasses() : LiveData<MutableSet<Classes>>{
+    fun getClasses(): LiveData<MutableSet<Classes>> {
         val classesSet = mutableSetOf<Classes>()
         db.collection("allClasses").document(user?.uid!!).get()
             .addOnSuccessListener { documentSnapshot ->
-                for (key in documentSnapshot.data!!.keys){
+                for (key in documentSnapshot.data!!.keys) {
                     val firebaseClasses = documentSnapshot.data!![key] as MutableMap<String, Objects>
                     val classes = Classes()
-                    for(innerKey in firebaseClasses.keys){
-                        when(innerKey){
+                    for (innerKey in firebaseClasses.keys) {
+                        when (innerKey) {
                             "id" -> classes.id = firebaseClasses[innerKey] as String
                             "name" -> classes.name = firebaseClasses[innerKey] as String?
                             "discipline" -> classes.discipline = firebaseClasses[innerKey] as String?
                             "stage" -> classes.stage = firebaseClasses[innerKey] as String?
                             "idealTerm" -> classes.idealTerm = firebaseClasses[innerKey] as Int?
-                            "units" -> classes.units = firebaseClasses[innerKey]  as Int?
-                            "requirement"->  classes.requirement = firebaseClasses[innerKey] as MutableList<String>?
+                            "units" -> classes.units = firebaseClasses[innerKey] as Int?
+                            "requirement" -> classes.requirement = firebaseClasses[innerKey] as MutableList<String>?
                             else -> Log.e("firebase", "extra key value for Classes: $key , $innerKey")
                         }
                     }
@@ -96,8 +101,8 @@ object Repository {
                     classesSet.add(classes)
                 }
             }
-            .addOnFailureListener{
-                Log.e("firebase","Failed to retrieve Classes")
+            .addOnFailureListener {
+                Log.e("firebase", "Failed to retrieve Classes")
             }
         classesLiveData.value = classesSet
         return classesLiveData
@@ -108,6 +113,7 @@ object Repository {
         val data = hashMapOf(
             classInstances.id to classInstances
         )
+        classInstancesLiveData.value?.add(classInstances)
         return db.collection("allClassInstances").document(user?.uid!!).set(data, SetOptions.merge())
     }
 
@@ -115,24 +121,24 @@ object Repository {
         val classInstancesSet = mutableSetOf<ClassInstances>()
         db.collection("allClassInstances").document(user?.uid!!).get()
             .addOnSuccessListener { documentSnapshot ->
-                for (key in documentSnapshot.data!!.keys){
+                for (key in documentSnapshot.data!!.keys) {
                     val firebaseClassInstances = documentSnapshot.data!![key] as MutableMap<String, Objects>
                     val classesInstance = ClassInstances()
-                    var timess : List<MutableMap<String,Objects>>? = null
-                    for(innerKey in firebaseClassInstances.keys){
-                        when(innerKey){
+                    var timess: List<MutableMap<String, Objects>>? = null
+                    for (innerKey in firebaseClassInstances.keys) {
+                        when (innerKey) {
                             "id" -> classesInstance.id = firebaseClassInstances[innerKey] as String
                             "teacher" -> classesInstance.teacher = firebaseClassInstances[innerKey] as String?
                             "classes" -> classesInstance.classes = firebaseClassInstances[innerKey] as String?
-                            "timess" -> timess = firebaseClassInstances[innerKey] as List<MutableMap<String,Objects>>?
+                            "timess" -> timess = firebaseClassInstances[innerKey] as List<MutableMap<String, Objects>>?
                             else -> Log.e("firebase", "extra key value for ClassInstances: $key , $innerKey")
                         }
                         val timeList = mutableListOf<Time>()
                         if (timess != null) {
-                            for(tim in timess){
+                            for (tim in timess) {
                                 val time = Time()
-                                for (timeKey in tim.keys){
-                                    when(timeKey){
+                                for (timeKey in tim.keys) {
+                                    when (timeKey) {
                                         "day" -> time.day = tim[timeKey] as Int
                                         "startHour" -> time.startHour = tim[timeKey] as Int
                                         "endHour" -> time.endHour = tim[timeKey] as Int
@@ -142,13 +148,13 @@ object Repository {
                                 timeList.add(time)
                             }
                         }
-                        classesInstance.timess=timeList
+                        classesInstance.timess = timeList
                     }
                     classInstancesSet.add(classesInstance)
                 }
             }
-            .addOnFailureListener{
-                Log.e("firebase","Failed to retrieve classInstances")
+            .addOnFailureListener {
+                Log.e("firebase", "Failed to retrieve classInstances")
             }
         classInstancesLiveData.value = classInstancesSet
         return classInstancesLiveData
@@ -158,31 +164,32 @@ object Repository {
         val data = hashMapOf(
             classInstances.id to classInstances
         )
+        registeredClassesLiveData.value?.add(classInstances)
         return db.collection("userClassInstances").document(user?.uid!!).set(data, SetOptions.merge())
     }
 
-    fun getRegisteredClasses(): MutableLiveData<MutableSet<ClassInstances>> {
+    fun getRegisteredClasses(): LiveData<MutableSet<ClassInstances>> {
         val classInstancesSet = mutableSetOf<ClassInstances>()
         db.collection("userClassInstances").document(user?.uid!!).get()
             .addOnSuccessListener { documentSnapshot ->
-                for (key in documentSnapshot.data!!.keys){
+                for (key in documentSnapshot.data!!.keys) {
                     val firebaseClassInstances = documentSnapshot.data!![key] as MutableMap<String, Objects>
                     val classesInstance = ClassInstances()
-                    var timess : List<MutableMap<String,Objects>>? = null
-                    for(innerKey in firebaseClassInstances.keys){
-                        when(innerKey){
+                    var timess: List<MutableMap<String, Objects>>? = null
+                    for (innerKey in firebaseClassInstances.keys) {
+                        when (innerKey) {
                             "id" -> classesInstance.id = firebaseClassInstances[innerKey] as String
                             "teacher" -> classesInstance.teacher = firebaseClassInstances[innerKey] as String?
                             "classes" -> classesInstance.classes = firebaseClassInstances[innerKey] as String?
-                            "timess" -> timess = firebaseClassInstances[innerKey] as List<MutableMap<String,Objects>>?
+                            "timess" -> timess = firebaseClassInstances[innerKey] as List<MutableMap<String, Objects>>?
                             else -> Log.e("firebase", "extra key value for ClassInstances: $key , $innerKey")
                         }
                         val timeList = mutableListOf<Time>()
                         if (timess != null) {
-                            for(tim in timess){
+                            for (tim in timess) {
                                 val time = Time()
-                                for (timeKey in tim.keys){
-                                    when(timeKey){
+                                for (timeKey in tim.keys) {
+                                    when (timeKey) {
                                         "day" -> time.day = tim[timeKey] as Int
                                         "startHour" -> time.startHour = tim[timeKey] as Int
                                         "endHour" -> time.endHour = tim[timeKey] as Int
@@ -192,15 +199,15 @@ object Repository {
                                 timeList.add(time)
                             }
                         }
-                        classesInstance.timess=timeList
+                        classesInstance.timess = timeList
                     }
                     classInstancesSet.add(classesInstance)
                 }
             }
-            .addOnFailureListener{
-                Log.e("firebase","Failed to retrieve classInstances")
+            .addOnFailureListener {
+                Log.e("firebase", "Failed to retrieve classInstances")
             }
-        classInstancesLiveData.value = classInstancesSet
+        registeredClassesLiveData.value = classInstancesSet
         return classInstancesLiveData
     }
 
