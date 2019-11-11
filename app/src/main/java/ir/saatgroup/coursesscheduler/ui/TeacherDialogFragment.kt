@@ -1,6 +1,5 @@
 package ir.saatgroup.coursesscheduler.ui
 
-import android.app.Activity
 import android.content.Intent
 import androidx.lifecycle.ViewModelProviders
 import android.net.Uri
@@ -28,7 +27,7 @@ class TeacherDialogFragment(private val teacher: Teacher) : DialogFragment() {
     }
 
     private lateinit var viewModel: TeacherDialogViewModel
-    private lateinit var classesLiveData: LiveData<MutableList<ClassInstances>>
+    private lateinit var classesInstancesLiveData: LiveData<MutableList<ClassInstances>>
     private lateinit var adapter: ClassInstancesRecycleAdapter
     private lateinit var inflater: LayoutInflater
 
@@ -53,31 +52,37 @@ class TeacherDialogFragment(private val teacher: Teacher) : DialogFragment() {
         }
 
         delete.setOnClickListener { v ->
-            viewModel.deleteTeacher(teacher).addOnSuccessListener {
-                val snack = Snackbar.make(activity?.rootLayout!!, "${teacher.name} deleted successfully", Snackbar.LENGTH_LONG)
-                snack.show()
-                dialog?.dismiss()
-            }.addOnFailureListener {
-                val snack = Snackbar.make(v, "Something went wrong!! Try again", Snackbar.LENGTH_LONG)
+            if(classesInstancesLiveData.value?.size == 0){
+                viewModel.deleteTeacher(teacher).addOnSuccessListener {
+                    val snack = Snackbar.make(activity?.rootLayout!!, "${teacher.name} deleted successfully", Snackbar.LENGTH_LONG)
+                    snack.show()
+                    dialog?.dismiss()
+                }.addOnFailureListener {
+                    val snack = Snackbar.make(v, "Something went wrong!! Try again", Snackbar.LENGTH_LONG)
+                    snack.show()
+                }
+            }else{
+                val snack = Snackbar.make(v, "You can't delete a teacher when, he/she has some class instances", Snackbar.LENGTH_LONG)
                 snack.show()
             }
+
         }
 
 
-        classesLiveData = viewModel.getClasses(teacher.id)
-        adapter = ClassInstancesRecycleAdapter(inflater, classesLiveData.value as List<ClassInstances>)
+        classesInstancesLiveData = viewModel.getClasses(teacher.id)
+        adapter = ClassInstancesRecycleAdapter(inflater, classesInstancesLiveData.value as List<ClassInstances>)
         classInstancesRecycleView.adapter = adapter
     }
 
     fun setCardValues() {
         name.text = teacher.name
-        degree.text = teacher.degree
+        stage.text = teacher.degree
         discipline.text = teacher.discipline
-        expertise.text = teacher.expertise
+        idealTerm.text = teacher.expertise
         if (teacher.birthYear != null) {
-            age.text = (Calendar.getInstance().get(Calendar.YEAR) - teacher.birthYear!!).toString()
+            units.text = (Calendar.getInstance().get(Calendar.YEAR) - teacher.birthYear!!).toString()
         } else {
-            age.text = getString(R.string.unknown)
+            units.text = getString(R.string.unknown)
         }
         email.text = teacher.email
         if (teacher.img != null) {

@@ -34,15 +34,14 @@
     <string name="email">Email:</string>
     <string name="stage">Stage:</string>
     <string name="unknown">Unknown</string>
-    <string name="idealTerm">Ideal Term</string>
-    <string name="units">Units</string>
+    <string name="idealTerm">Ideal Term:</string>
+    <string name="units">Units:</string>
 
     <string name="edit">Edit</string>
     <string name="delete">Delete</string>
     <string name="submit">Submit</string>
     <string name="selectImage">Select an image</string>
-
-
+    <string name="profilePic">Profile Image</string>
 
 
 </resources>
