@@ -24,12 +24,14 @@ class ClassesTabFragment : Fragment() {
     private lateinit var viewModel: ClassesTabViewModel
     private lateinit var adapter: ClassesRecycleAdapter
     private lateinit var classLiveData: LiveData<MutableList<Classes>>
+    private lateinit var inflater: LayoutInflater
 
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        this.inflater = inflater
         return inflater.inflate(R.layout.classes_tab_fragment, container, false)
     }
 
@@ -37,7 +39,7 @@ class ClassesTabFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(ClassesTabViewModel::class.java)
         classLiveData = viewModel.getClasses()
-        adapter = ClassesRecycleAdapter(classLiveData.value as List<Classes>)
+        adapter = ClassesRecycleAdapter(inflater,classLiveData.value as List<Classes>)
         val observer = Observer<List<Classes>>{
             adapter.dataSource = it
             adapter.notifyDataSetChanged()

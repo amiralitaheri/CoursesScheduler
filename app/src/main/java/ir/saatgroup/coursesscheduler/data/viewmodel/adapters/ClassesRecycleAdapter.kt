@@ -9,10 +9,10 @@ import ir.saatgroup.coursesscheduler.data.model.Classes
 import ir.saatgroup.coursesscheduler.utils.inflate
 import kotlinx.android.synthetic.main.class_card_layout.view.*
 
-class ClassesRecycleAdapter( var dataSource: List<Classes>):
+class ClassesRecycleAdapter(private val inflater: LayoutInflater, var dataSource: List<Classes>):
     RecyclerView.Adapter<ClassesRecycleAdapter.ClassHolder> () {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ClassesRecycleAdapter.ClassHolder {
-        return ClassHolder(parent.inflate(R.layout.class_card_layout, false))
+        return ClassHolder(inflater.inflate(R.layout.class_card_layout,parent, false))
     }
 
     override fun getItemCount(): Int {
