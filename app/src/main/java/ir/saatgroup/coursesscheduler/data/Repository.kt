@@ -73,7 +73,7 @@ object Repository {
                             "degree" -> teacher.degree = firebaseTeacher[innerKey] as String?
                             "discipline" -> teacher.discipline = firebaseTeacher[innerKey] as String?
                             "expertise" -> teacher.expertise = firebaseTeacher[innerKey] as String?
-                            "birthYear" -> teacher.birthYear = firebaseTeacher[innerKey] as Int?
+                            "birthYear" -> teacher.birthYear = (firebaseTeacher[innerKey] as Long?)?.toInt()
                             "img" -> teacher.img = firebaseTeacher[innerKey] as String?
                             "email" -> teacher.email = firebaseTeacher[innerKey] as String?
                             else -> Log.e("firebase", "extra key value for teacher: $key , $innerKey")
@@ -114,8 +114,8 @@ object Repository {
                             "name" -> classes.name = firebaseClasses[innerKey] as String?
                             "discipline" -> classes.discipline = firebaseClasses[innerKey] as String?
                             "stage" -> classes.stage = firebaseClasses[innerKey] as String?
-                            "idealTerm" -> classes.idealTerm = firebaseClasses[innerKey] as Int?
-                            "units" -> classes.units = firebaseClasses[innerKey] as Int?
+                            "idealTerm" -> classes.idealTerm = (firebaseClasses[innerKey] as Long?)?.toInt()
+                            "units" -> classes.units = (firebaseClasses[innerKey] as Long?)?.toInt()
                             "requirement" -> classes.requirement = firebaseClasses[innerKey] as MutableList<String>?
                             else -> Log.e("firebase", "extra key value for Classes: $key , $innerKey")
                         }
