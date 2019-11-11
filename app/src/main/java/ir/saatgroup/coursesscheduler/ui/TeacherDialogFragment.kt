@@ -76,13 +76,13 @@ class TeacherDialogFragment(private val teacher: Teacher) : DialogFragment() {
 
     fun setCardValues() {
         name.text = teacher.name
-        stage.text = teacher.degree
+        degree.text = teacher.degree
         discipline.text = teacher.discipline
-        idealTerm.text = teacher.expertise
+        expertise.text = teacher.expertise
         if (teacher.birthYear != null) {
-            units.text = (Calendar.getInstance().get(Calendar.YEAR) - teacher.birthYear!!).toString()
+            age.text = (Calendar.getInstance().get(Calendar.YEAR) - teacher.birthYear!!).toString()
         } else {
-            units.text = getString(R.string.unknown)
+            age.text = getString(R.string.unknown)
         }
         email.text = teacher.email
         if (teacher.img != null) {
