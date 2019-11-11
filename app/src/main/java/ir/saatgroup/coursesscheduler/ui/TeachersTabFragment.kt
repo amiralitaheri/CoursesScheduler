@@ -46,13 +46,14 @@ class TeachersTabFragment : Fragment() {
         teachersLiveData = viewModel.getTeachers()
         adapter = TeachersRecycleAdapter(inflater,teachersLiveData.value as List<Teacher>)
         val observer = Observer<List<Teacher>>{
+            adapter.dataSource = it
             adapter.notifyDataSetChanged()
         }
         teachersLiveData.observe(this,observer)
         teachersRecyclerView.adapter = adapter
 
         addTeacher.setOnClickListener {
-            var activity = it.context as FragmentActivity
+            val activity = it.context as FragmentActivity
             val ft = activity.supportFragmentManager.beginTransaction()
             val prev = activity.supportFragmentManager.findFragmentByTag("addTeacherDialog")
             if (prev != null) {

@@ -1,14 +1,11 @@
 package ir.saatgroup.coursesscheduler.ui
 
-import android.app.Activity
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
-import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.snackbar.Snackbar
 
 import ir.saatgroup.coursesscheduler.R
@@ -44,8 +41,8 @@ class AddTeacherDialogFragment : DialogFragment() {
         //submit button
         submit.setOnClickListener { v ->
             if(nameInput.text.toString() != ""){
-                val teacher = Teacher(nameInput.text.toString(),degreeInput.text.toString(),disciplineInput.text.toString(),
-                    expertiseInput.text.toString(),birthYearInput.text.toString().toIntOrNull(),null,emailInput.text.toString())
+                val teacher = Teacher(nameInput.text.toString(),stageInput.text.toString(),disciplineInput.text.toString(),
+                    idealTermInput.text.toString(),unitsInput.text.toString().toIntOrNull(),null,emailInput.text.toString())
 
                 viewModel.setTeacher(teacher).addOnSuccessListener {
                     val snack = Snackbar.make(activity?.rootLayout!!,"Teacher ${teacher.name} added successfully",Snackbar.LENGTH_LONG)

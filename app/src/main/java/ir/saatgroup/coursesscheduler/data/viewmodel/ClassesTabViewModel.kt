@@ -1,7 +1,8 @@
 package ir.saatgroup.coursesscheduler.data.viewmodel
 
 import androidx.lifecycle.ViewModel;
+import ir.saatgroup.coursesscheduler.data.Repository
 
 class ClassesTabViewModel : ViewModel() {
-    // TODO: Implement the ViewModel
+    fun getClasses() = Repository.getClasses()
 }

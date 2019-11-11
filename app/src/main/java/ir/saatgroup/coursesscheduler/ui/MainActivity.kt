@@ -19,6 +19,7 @@ class MainActivity : AppCompatActivity() {
         viewPager = findViewById(R.id.viewPagerMain)
         viewPagerAdapterMain = ViewPagerAdapterMain(supportFragmentManager,lifecycle)
         viewPager.adapter = viewPagerAdapterMain
+        Repository.init()
     }
 
 

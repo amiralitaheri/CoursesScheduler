@@ -1,5 +1,7 @@
 package ir.saatgroup.coursesscheduler.data.model
 
+import ir.saatgroup.coursesscheduler.utils.toId
+
 class Classes() {
     lateinit var id: String
     var name: String? = null
@@ -10,7 +12,7 @@ class Classes() {
     var requirement: MutableList<String>? = null
 
     constructor(
-        name: String? = null,
+        name: String,
         discipline: String? = null,
         stage: String? = null,
         idealTerm: Int? = null,
@@ -23,10 +25,8 @@ class Classes() {
         this.idealTerm = idealTerm
         this.units = units
         this.requirement = requirement
-        nameToId()
+        id = name.toId()
     }
 
-    fun nameToId() {
-        id = name?.toLowerCase()?.replace(" ","_") ?: ""
-    }
+
 }
