@@ -28,20 +28,32 @@ object Repository {
     private val classInstancesLiveData = MutableLiveData<MutableList<ClassInstances>>()
     private val registeredClassesLiveData = MutableLiveData<MutableList<ClassInstances>>()
 
+    fun init() {
+        teachersLiveData.value = mutableListOf()
+        classesLiveData.value = mutableListOf()
+        classInstancesLiveData.value = mutableListOf()
+        registeredClassesLiveData.value = mutableListOf()
+
+    }
+
     fun setTeacher(teacher: Teacher): Task<Void> {
         val data = hashMapOf(
             teacher.id to teacher
         )
-        teachersLiveData.value?.add(teacher)
-        return db.collection("allTeachers").document(user?.uid!!).set(data, SetOptions.merge())
+        return db.collection("allTeachers").document(user?.uid!!).set(data, SetOptions.merge()).addOnSuccessListener {
+            teachersLiveData.value?.add(teacher)
+            teachersLiveData.value = teachersLiveData.value
+        }
     }
 
     fun deleteTeacher(teacher: Teacher): Task<Void> {
-        teachersLiveData.value?.remove(teacher)
         val updates = hashMapOf<String, Any>(
             teacher.id to FieldValue.delete()
         )
-        return db.collection("allTeachers").document(user?.uid!!).update(updates)
+        return db.collection("allTeachers").document(user?.uid!!).update(updates).addOnSuccessListener {
+            teachersLiveData.value?.remove(teacher)
+            teachersLiveData.value = teachersLiveData.value
+        }
     }
 
 
@@ -69,11 +81,12 @@ object Repository {
                     }
                     teachers.add(teacher)
                 }
+                teachersLiveData.value = teachers
             }
             .addOnFailureListener {
                 Log.e("firebase", "Failed to retrieve Teachers")
             }
-        teachersLiveData.value = teachers
+
         return teachersLiveData
     }
 
@@ -82,8 +95,10 @@ object Repository {
         val data = hashMapOf(
             classes.id to classes
         )
-        classesLiveData.value?.add(classes)
-        return db.collection("allClasses").document(user?.uid!!).set(data, SetOptions.merge())
+        return db.collection("allClasses").document(user?.uid!!).set(data, SetOptions.merge()).addOnSuccessListener {
+            classesLiveData.value?.add(classes)
+            classesLiveData.value = classesLiveData.value
+        }
     }
 
     fun getClasses(): LiveData<MutableList<Classes>> {
@@ -109,20 +124,22 @@ object Repository {
 
                     classesSet.add(classes)
                 }
+                classesLiveData.value = classesSet
             }
             .addOnFailureListener {
                 Log.e("firebase", "Failed to retrieve Classes")
             }
-        classesLiveData.value = classesSet
         return classesLiveData
     }
 
     fun deleteClasses(classes: Classes): Task<Void> {
-        classesLiveData.value?.remove(classes)
         val updates = hashMapOf<String, Any>(
             classes.id to FieldValue.delete()
         )
-        return db.collection("allClasses").document(user?.uid!!).update(updates)
+        return db.collection("allClasses").document(user?.uid!!).update(updates).addOnSuccessListener {
+            classesLiveData.value?.remove(classes)
+            classesLiveData.value = classesLiveData.value
+        }
     }
 
 
@@ -130,8 +147,11 @@ object Repository {
         val data = hashMapOf(
             classInstances.id to classInstances
         )
-        classInstancesLiveData.value?.add(classInstances)
         return db.collection("allClassInstances").document(user?.uid!!).set(data, SetOptions.merge())
+            .addOnSuccessListener {
+                classInstancesLiveData.value?.add(classInstances)
+                classInstancesLiveData.value = classInstancesLiveData.value
+            }
     }
 
     fun getClassInstances(): LiveData<MutableList<ClassInstances>> {
@@ -169,28 +189,35 @@ object Repository {
                     }
                     classInstancesSet.add(classesInstance)
                 }
+                classInstancesLiveData.value = classInstancesSet
             }
             .addOnFailureListener {
                 Log.e("firebase", "Failed to retrieve classInstances")
             }
-        classInstancesLiveData.value = classInstancesSet
+
         return classInstancesLiveData
     }
 
     fun deleteClassInstance(classInstance: ClassInstances): Task<Void> {
-        classInstancesLiveData.value?.remove(classInstance)
+
         val updates = hashMapOf<String, Any>(
             classInstance.id to FieldValue.delete()
         )
-        return db.collection("allClassInstances").document(user?.uid!!).update(updates)
+        return db.collection("allClassInstances").document(user?.uid!!).update(updates).addOnSuccessListener {
+            classInstancesLiveData.value?.remove(classInstance)
+            classInstancesLiveData.value = classInstancesLiveData.value
+        }
     }
 
     fun registerClass(classInstances: ClassInstances): Task<Void> {
         val data = hashMapOf(
             classInstances.id to classInstances
         )
-        registeredClassesLiveData.value?.add(classInstances)
         return db.collection("userClassInstances").document(user?.uid!!).set(data, SetOptions.merge())
+            .addOnSuccessListener {
+                registeredClassesLiveData.value?.add(classInstances)
+                registeredClassesLiveData.value = registeredClassesLiveData.value
+            }
     }
 
     fun getRegisteredClasses(): LiveData<MutableList<ClassInstances>> {
@@ -228,20 +255,24 @@ object Repository {
                     }
                     classInstancesSet.add(classesInstance)
                 }
+                registeredClassesLiveData.value = classInstancesSet
             }
             .addOnFailureListener {
                 Log.e("firebase", "Failed to retrieve classInstances")
             }
-        registeredClassesLiveData.value = classInstancesSet
+
         return classInstancesLiveData
     }
 
     fun deleteRegisteredClass(classInstance: ClassInstances): Task<Void> {
-        registeredClassesLiveData.value?.remove(classInstance)
+
         val updates = hashMapOf<String, Any>(
             classInstance.id to FieldValue.delete()
         )
-        return db.collection("userClassInstances").document(user?.uid!!).update(updates)
+        return db.collection("userClassInstances").document(user?.uid!!).update(updates).addOnSuccessListener {
+            registeredClassesLiveData.value?.remove(classInstance)
+            registeredClassesLiveData.value = registeredClassesLiveData.value
+        }
     }
 
 
