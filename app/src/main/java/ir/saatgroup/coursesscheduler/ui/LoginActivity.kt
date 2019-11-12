@@ -8,12 +8,13 @@ import android.app.Activity
 import android.content.Intent
 import android.util.Log
 import com.firebase.ui.auth.IdpResponse
+import ir.saatgroup.coursesscheduler.data.ConstData
 import ir.saatgroup.coursesscheduler.data.auth.providers
 
 
 class LoginActivity : AppCompatActivity() {
 
-    private val RC_SIGN_IN = 77
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,26 +42,17 @@ class LoginActivity : AppCompatActivity() {
                 .createSignInIntentBuilder()
                 .setAvailableProviders(providers)
                 .build(),
-            RC_SIGN_IN)
+            ConstData.RC_SIGN_IN)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == RC_SIGN_IN) {
-            val response = IdpResponse.fromResultIntent(data)
-
+        if (requestCode == ConstData.RC_SIGN_IN) {
             if (resultCode == Activity.RESULT_OK) {
                 runMain()
-                // Successfully signed in
-                //val user = FirebaseAuth.getInstance().currentUser
-               // val snack = Snackbar.make(findViewById<View>(R.id.rootLayout),"Logged In",Snackbar.LENGTH_LONG)
-              //  snack.show()
             } else {
-                // Sign in failed. If response is null the user canceled the
-                // sign-in flow using the back button. Otherwise check
-                // response.getError().getErrorCode() and handle the error.
-                // ...
+                firebaseAuth()
             }
         }
     }
