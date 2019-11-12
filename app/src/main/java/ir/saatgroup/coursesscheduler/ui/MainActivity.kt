@@ -10,8 +10,8 @@ import ir.saatgroup.coursesscheduler.data.viewmodel.adapters.ViewPagerAdapterMai
 
 class MainActivity : AppCompatActivity() {
 
-    lateinit var viewPager : ViewPager2
-    lateinit var viewPagerAdapterMain: ViewPagerAdapterMain
+    private lateinit var viewPager : ViewPager2
+    private lateinit var viewPagerAdapterMain: ViewPagerAdapterMain
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
