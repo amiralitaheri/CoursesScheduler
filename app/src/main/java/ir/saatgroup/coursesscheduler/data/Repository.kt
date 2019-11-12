@@ -3,6 +3,10 @@
 package ir.saatgroup.coursesscheduler.data
 
 import android.annotation.SuppressLint
+import android.content.Context
+import android.content.ContextWrapper
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,16 +15,23 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.UploadTask
 
 import ir.saatgroup.coursesscheduler.data.model.ClassInstances
 import ir.saatgroup.coursesscheduler.data.model.Classes
 import ir.saatgroup.coursesscheduler.data.model.Teacher
 import ir.saatgroup.coursesscheduler.data.model.Time
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileInputStream
+import java.io.FileOutputStream
 
 import java.util.*
 
 object Repository {
     @SuppressLint("StaticFieldLeak")
+    private val storageReference = FirebaseStorage.getInstance().reference
     private val db = FirebaseFirestore.getInstance()
     private val user = FirebaseAuth.getInstance().currentUser
     private val teachersLiveData = MutableLiveData<MutableList<Teacher>>()
@@ -273,6 +284,37 @@ object Repository {
             registeredClassesLiveData.value?.remove(classInstance)
             registeredClassesLiveData.value = registeredClassesLiveData.value
         }
+    }
+
+    fun uploadImage(bitmap: Bitmap, fileName: String): UploadTask {
+        val baos = ByteArrayOutputStream()
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
+        val data = baos.toByteArray()
+
+        return storageReference.child("${user?.uid}/$fileName.jpg").putBytes(data)
+    }
+
+    fun storeImage(bitmap: Bitmap, fileName: String, context: Context) {
+        val contextWrapper = ContextWrapper(context)
+        val directory = contextWrapper.getDir("imageDir", Context.MODE_PRIVATE)
+        val file = File(directory,"$fileName.jpg")
+        val fos = FileOutputStream(file)
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos)
+    }
+
+    fun getImageBitmap(fileName : String,context: Context) : LiveData<Bitmap?>{
+        val contextWrapper = ContextWrapper(context)
+        val directory = contextWrapper.getDir("imageDir", Context.MODE_PRIVATE)
+        val file = File(directory,"$fileName.jpg")
+        var bitmapLiveData = MutableLiveData<Bitmap?>()
+        if(file.exists()){
+            bitmapLiveData.value = BitmapFactory.decodeFile(file.absolutePath)
+        }else{
+            storageReference.child("${user?.uid}/$fileName.jpg").getFile(file).addOnSuccessListener {
+                bitmapLiveData.value = BitmapFactory.decodeFile(file.absolutePath)
+            }
+        }
+        return bitmapLiveData
     }
 
 

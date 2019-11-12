@@ -27,7 +27,7 @@
                     android:layout_marginBottom="8dp" app:layout_constraintBottom_toBottomOf="parent"
                     android:layout_marginTop="8dp" app:layout_constraintTop_toTopOf="parent" android:textSize="24sp"
             />
-            <ImageView
+            <de.hdodenhof.circleimageview.CircleImageView
                     android:layout_width="42dp"
                     android:layout_height="42dp" tools:srcCompat="@tools:sample/avatars"
                     android:id="@+id/pic" app:layout_constraintStart_toStartOf="parent"
@@ -36,7 +36,6 @@
                     android:layout_marginBottom="8dp"
                     android:maxWidth="42dp"
                     android:maxHeight="42dp"
-                    android:scaleType="fitCenter"
             />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>

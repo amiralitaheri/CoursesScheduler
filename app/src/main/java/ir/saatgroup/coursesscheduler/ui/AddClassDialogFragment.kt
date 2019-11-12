@@ -1,10 +1,12 @@
 package ir.saatgroup.coursesscheduler.ui
 
+import android.content.Context
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.snackbar.Snackbar
 
@@ -49,11 +51,13 @@ class AddClassDialogFragment : DialogFragment() {
                 viewModel.setClass(clas).addOnSuccessListener {
                     val snack = Snackbar.make(activity?.rootLayout!!,"Class ${clas.name} added successfully",
                         Snackbar.LENGTH_LONG)
+                    snack.view.setBackgroundColor(ContextCompat.getColor(activity!!,android.R.color.holo_blue_light))
                     snack.show()
                     dialog?.dismiss()
                 }
             }else{
                 val snack = Snackbar.make(v,"Class name is required", Snackbar.LENGTH_LONG)
+                snack.view.setBackgroundColor(ContextCompat.getColor(activity!!,android.R.color.holo_red_light))
                 snack.show()
             }
 
