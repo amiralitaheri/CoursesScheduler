@@ -286,6 +286,7 @@ object Repository {
         }
     }
 
+
     fun uploadImage(bitmap: Bitmap, fileName: String): UploadTask {
         val baos = ByteArrayOutputStream()
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
@@ -301,12 +302,19 @@ object Repository {
         val fos = FileOutputStream(file)
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos)
     }
+    fun deleteImage(fileName : String , context: Context){
+        val contextWrapper = ContextWrapper(context)
+        val directory = contextWrapper.getDir("imageDir", Context.MODE_PRIVATE)
+        val file = File(directory,"$fileName.jpg")
+        if(file.exists()){file.delete()}
+        storageReference.child("${user?.uid}/$fileName.jpg").delete()
+    }
 
     fun getImageBitmap(fileName : String,context: Context) : LiveData<Bitmap?>{
         val contextWrapper = ContextWrapper(context)
         val directory = contextWrapper.getDir("imageDir", Context.MODE_PRIVATE)
         val file = File(directory,"$fileName.jpg")
-        var bitmapLiveData = MutableLiveData<Bitmap?>()
+        val bitmapLiveData = MutableLiveData<Bitmap?>()
         if(file.exists()){
             bitmapLiveData.value = BitmapFactory.decodeFile(file.absolutePath)
         }else{

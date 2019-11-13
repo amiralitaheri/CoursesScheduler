@@ -1,8 +1,10 @@
 package ir.saatgroup.coursesscheduler.data.viewmodel
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.android.gms.tasks.Task
 import ir.saatgroup.coursesscheduler.data.Repository
 import ir.saatgroup.coursesscheduler.data.model.ClassInstances
 import ir.saatgroup.coursesscheduler.data.model.Teacher
@@ -31,5 +33,8 @@ class TeacherDialogViewModel : ViewModel() {
         return filteredClassInstancesLiveData
     }
 
-    fun deleteTeacher(teacher : Teacher) = Repository.deleteTeacher(teacher)
+    fun deleteTeacher(teacher: Teacher, context: Context): Task<Void> {
+        Repository.deleteImage(teacher.id, context)
+        return Repository.deleteTeacher(teacher)
+    }
 }

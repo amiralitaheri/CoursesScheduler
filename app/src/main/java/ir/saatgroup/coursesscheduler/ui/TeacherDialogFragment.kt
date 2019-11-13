@@ -64,7 +64,7 @@ class TeacherDialogFragment(private val teacher: Teacher, private val bitmapLive
 
         delete.setOnClickListener { v ->
             if (classesInstancesLiveData.value?.size == 0) {
-                viewModel.deleteTeacher(teacher).addOnSuccessListener {
+                viewModel.deleteTeacher(teacher,context!!).addOnSuccessListener {
                     val snack = Snackbar.make(
                         activity?.rootLayout!!,
                         "${teacher.name} deleted successfully",
