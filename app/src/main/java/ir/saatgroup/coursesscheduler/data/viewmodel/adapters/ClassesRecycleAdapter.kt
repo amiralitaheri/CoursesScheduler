@@ -37,7 +37,7 @@ class ClassesRecycleAdapter(private val inflater: LayoutInflater, var dataSource
                 if (prev != null) {
                     ft.remove(prev)
                 }
-                ft.addToBackStack(null)
+                ft.addToBackStack("classDialog")
                 val dialogFragment = ClassDialogFragment.newInstance(clas!!)
                 dialogFragment.show(ft, "classDialog")
             }

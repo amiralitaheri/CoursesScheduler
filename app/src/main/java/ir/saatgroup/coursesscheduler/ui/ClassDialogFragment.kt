@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import com.google.android.material.snackbar.Snackbar
 
@@ -62,6 +63,20 @@ class ClassDialogFragment(private val clas : Classes) : DialogFragment() {
                 val snack = Snackbar.make(v, "You can't delete a class when, it has some class instances", Snackbar.LENGTH_LONG)
                 snack.show()
             }
+        }
+
+        edit.setOnClickListener {
+            val ft = activity?.supportFragmentManager?.beginTransaction()
+            val prev = activity?.supportFragmentManager?.findFragmentByTag("editClassDialog")
+            activity?.supportFragmentManager?.popBackStack("classDialog", FragmentManager.POP_BACK_STACK_INCLUSIVE)
+            if (prev != null) {
+                ft?.remove(prev)
+            }
+            ft?.addToBackStack("editClassDialog")
+
+            val dialogFragment = EditClassDialogFragment(clas)
+            dialogFragment.show(ft!!, "editClassDialog")
+
         }
 
         classesInstancesLiveData = viewModel.getClasses(clas.id)

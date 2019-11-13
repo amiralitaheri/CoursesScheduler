@@ -37,6 +37,7 @@ class TeachersRecycleAdapter(private val inflater: LayoutInflater, var dataSourc
 
         fun bindTeacher(t: Teacher) {
             this.teacher = t
+            //TODO : this way is too slow, change it
             bitmapLiveData = Repository.getImageBitmap(t.id, parentView.context)
             parentView.name.text = t.name
             if (bitmapLiveData!!.value != null) {
@@ -46,13 +47,13 @@ class TeachersRecycleAdapter(private val inflater: LayoutInflater, var dataSourc
             }
 
             parentView.setOnClickListener {
-                var activity = it.context as FragmentActivity
+                val activity = it.context as FragmentActivity
                 val ft = activity.supportFragmentManager.beginTransaction()
                 val prev = activity.supportFragmentManager.findFragmentByTag("teacherDialog")
                 if (prev != null) {
                     ft.remove(prev)
                 }
-                ft.addToBackStack(null)
+                ft.addToBackStack("teacherDialog")
                 val dialogFragment = TeacherDialogFragment.newInstance(teacher!! ,bitmapLiveData!!)
                 dialogFragment.show(ft, "teacherDialog")
             }

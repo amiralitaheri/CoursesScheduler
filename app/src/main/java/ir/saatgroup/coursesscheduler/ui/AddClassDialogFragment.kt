@@ -1,6 +1,6 @@
 package ir.saatgroup.coursesscheduler.ui
 
-import android.content.Context
+
 import androidx.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,6 +15,7 @@ import ir.saatgroup.coursesscheduler.data.model.Classes
 import ir.saatgroup.coursesscheduler.data.viewmodel.AddClassDialogViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.add_class_dialog_fragment.*
+
 
 
 class AddClassDialogFragment : DialogFragment() {

@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LiveData
 import com.google.android.material.snackbar.Snackbar
 
@@ -84,6 +85,19 @@ class TeacherDialogFragment(private val teacher: Teacher, private val bitmapLive
                 snack.show()
             }
 
+        }
+
+        edit.setOnClickListener {
+            val ft = activity?.supportFragmentManager?.beginTransaction()
+            val prev = activity?.supportFragmentManager?.findFragmentByTag("editTeacherDialog")
+            activity?.supportFragmentManager?.popBackStack("teacherDialog", FragmentManager.POP_BACK_STACK_INCLUSIVE)
+            if (prev != null) {
+                ft?.remove(prev)
+            }
+            ft?.addToBackStack(null)
+            val dialogFragment = EditTeacherDialogFragment(teacher)
+            dialogFragment.show(ft!!, "editTeacherDialog")
+            dialog?.dismiss()
         }
 
 
