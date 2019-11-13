@@ -27,8 +27,8 @@ class TeacherDialogViewModel : ViewModel() {
     }
 
     fun getDummyClasses(): MutableLiveData<MutableList<ClassInstances>> {
-        filteredClassInstances.add(ClassInstances("Mohsen Rezvani", "Data Mining"))
-        filteredClassInstances.add(ClassInstances("Mohsen Rezvani", "Network"))
+        filteredClassInstances.add(ClassInstances("Mohsen Rezvani", "Data Mining",false))
+        filteredClassInstances.add(ClassInstances("Mohsen Rezvani", "Network",false))
         filteredClassInstancesLiveData.value = filteredClassInstances
         return filteredClassInstancesLiveData
     }

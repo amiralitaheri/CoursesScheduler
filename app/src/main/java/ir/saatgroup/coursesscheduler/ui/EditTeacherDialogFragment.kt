@@ -17,6 +17,7 @@ import com.google.android.material.snackbar.Snackbar
 import ir.saatgroup.coursesscheduler.R
 import ir.saatgroup.coursesscheduler.data.ConstData
 import ir.saatgroup.coursesscheduler.data.model.Teacher
+import ir.saatgroup.coursesscheduler.data.viewmodel.EditTeacherDialogViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.edit_teacher_dialog_fragment.*
 
@@ -64,7 +65,7 @@ class EditTeacherDialogFragment(private var prevTeacher: Teacher) : DialogFragme
                     emailInput.text.toString()
                 )
                 //call edit function
-                viewModel.editTeacher(prevTeacher,teacher).addOnSuccessListener {
+                viewModel.editTeacher(prevTeacher, teacher, context!!).addOnSuccessListener {
                     val snack = Snackbar.make(
                         activity?.rootLayout!!,
                         "Teacher ${teacher.name} added successfully",
@@ -73,7 +74,7 @@ class EditTeacherDialogFragment(private var prevTeacher: Teacher) : DialogFragme
                     snack.view.setBackgroundColor(ContextCompat.getColor(activity!!, android.R.color.holo_blue_light))
                     snack.show()
                     //call edit image if edit teacher was successful and image was modified
-                    if(picModified){
+                    if (picModified) {
                         viewModel.editImage(profileImage, teacher.id, context!!).addOnFailureListener {
                             val snack = Snackbar.make(v, "Failed to upload image", Snackbar.LENGTH_LONG)
                             snack.view.setBackgroundColor(
@@ -110,7 +111,7 @@ class EditTeacherDialogFragment(private var prevTeacher: Teacher) : DialogFragme
         birthYearInput.setText(prevTeacher.birthYear.toString())
         emailInput.setText(prevTeacher.email)
 
-        profilePic.setImageBitmap(viewModel.getImage(prevTeacher.id,context!!))
+        profilePic.setImageBitmap(viewModel.getImage(prevTeacher.id, context!!))
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

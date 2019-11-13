@@ -11,6 +11,7 @@ import com.google.android.material.snackbar.Snackbar
 
 import ir.saatgroup.coursesscheduler.R
 import ir.saatgroup.coursesscheduler.data.model.Classes
+import ir.saatgroup.coursesscheduler.data.viewmodel.EditClassDialogViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.edit_class_dialog_fragment.*
 
@@ -52,7 +53,7 @@ class EditClassDialogFragment(private var prev: Classes) : DialogFragment() {
                     unitsInput.toString().toIntOrNull()
                 )
 
-                viewModel.edit(prev, new).addOnSuccessListener {
+                viewModel.edit(prev, new, context!!).addOnSuccessListener {
                     val snack = Snackbar.make(
                         activity?.rootLayout!!, "Class ${new.name} edited successfully",
                         Snackbar.LENGTH_LONG
