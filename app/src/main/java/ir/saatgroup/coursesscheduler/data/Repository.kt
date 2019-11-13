@@ -37,14 +37,15 @@ object Repository {
     private val teachersLiveData = MutableLiveData<MutableList<Teacher>>()
     private val classesLiveData = MutableLiveData<MutableList<Classes>>()
     private val classInstancesLiveData = MutableLiveData<MutableList<ClassInstances>>()
-    private val registeredClassesLiveData = MutableLiveData<MutableList<ClassInstances>>()
+
 
     fun init() {
         teachersLiveData.value = mutableListOf()
         classesLiveData.value = mutableListOf()
         classInstancesLiveData.value = mutableListOf()
-        registeredClassesLiveData.value = mutableListOf()
-
+        getTeachersFromServer()
+        getClassesFromServer()
+        getClassInstancesFromServer()
     }
 
     fun setTeacher(teacher: Teacher): Task<Void> {
@@ -68,7 +69,7 @@ object Repository {
     }
 
 
-    fun getTeachers(): LiveData<MutableList<Teacher>> {
+    fun getTeachersFromServer(): LiveData<MutableList<Teacher>> {
 
         val teachers = mutableListOf<Teacher>()
         db.collection("allTeachers").document(user?.uid!!).get()
@@ -101,6 +102,10 @@ object Repository {
         return teachersLiveData
     }
 
+    fun getTeachers(): MutableLiveData<MutableList<Teacher>> {
+        return teachersLiveData
+    }
+
 
     fun setClass(classes: Classes): Task<Void> {
         val data = hashMapOf(
@@ -112,7 +117,7 @@ object Repository {
         }
     }
 
-    fun getClasses(): LiveData<MutableList<Classes>> {
+    fun getClassesFromServer(): LiveData<MutableList<Classes>> {
         val classesSet = mutableListOf<Classes>()
         db.collection("allClasses").document(user?.uid!!).get()
             .addOnSuccessListener { documentSnapshot ->
@@ -142,6 +147,9 @@ object Repository {
             }
         return classesLiveData
     }
+    fun getClasses(): MutableLiveData<MutableList<Classes>> {
+        return classesLiveData
+    }
 
     fun deleteClasses(classes: Classes): Task<Void> {
         val updates = hashMapOf<String, Any>(
@@ -165,7 +173,7 @@ object Repository {
             }
     }
 
-    fun getClassInstances(): LiveData<MutableList<ClassInstances>> {
+    fun getClassInstancesFromServer(): LiveData<MutableList<ClassInstances>> {
         val classInstancesSet = mutableListOf<ClassInstances>()
         db.collection("allClassInstances").document(user?.uid!!).get()
             .addOnSuccessListener { documentSnapshot ->
@@ -207,6 +215,10 @@ object Repository {
                 Log.e("firebase", "Failed to retrieve classInstances")
             }
 
+        return classInstancesLiveData
+    }
+
+    fun getClassInstances(): MutableLiveData<MutableList<ClassInstances>> {
         return classInstancesLiveData
     }
 

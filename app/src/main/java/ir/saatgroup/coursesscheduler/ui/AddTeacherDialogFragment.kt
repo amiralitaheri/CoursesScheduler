@@ -21,6 +21,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.scale
+import androidx.lifecycle.LiveData
 import ir.saatgroup.coursesscheduler.data.ConstData
 
 
@@ -32,6 +33,7 @@ class AddTeacherDialogFragment : DialogFragment() {
 
     private lateinit var viewModel: AddTeacherDialogViewModel
     private lateinit var profileImage: Bitmap
+    private lateinit var teachersLiveData: LiveData<MutableList<Teacher>>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,7 +45,7 @@ class AddTeacherDialogFragment : DialogFragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(AddTeacherDialogViewModel::class.java)
-
+        teachersLiveData = viewModel.getTeachers()
         //cancel button
         cancel.setOnClickListener {
             dialog?.dismiss()
@@ -52,6 +54,15 @@ class AddTeacherDialogFragment : DialogFragment() {
         //submit button
         submit.setOnClickListener { v ->
             if (nameInput.text.toString() != "") {
+                for(t in teachersLiveData.value!!){
+                    if(t.name ==nameInput.text.toString()){
+                        val snack = Snackbar.make(v, "Teacher ${t.name} already exist!!", Snackbar.LENGTH_LONG)
+                        snack.view.setBackgroundColor(ContextCompat.getColor(activity!!,android.R.color.holo_red_light))
+                        snack.show()
+                        return@setOnClickListener
+                    }
+                }
+
                 val teacher = Teacher(
                     nameInput.text.toString(),
                     stageInput.text.toString(),

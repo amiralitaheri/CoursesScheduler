@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.scale
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.LiveData
 import com.google.android.material.snackbar.Snackbar
 
 import ir.saatgroup.coursesscheduler.R
@@ -31,6 +32,7 @@ class EditTeacherDialogFragment(private var prevTeacher: Teacher) : DialogFragme
     private lateinit var viewModel: EditTeacherDialogViewModel
     private lateinit var profileImage: Bitmap
     private var picModified: Boolean = false
+    private lateinit var teachersLiveData: LiveData<MutableList<Teacher>>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,7 +44,7 @@ class EditTeacherDialogFragment(private var prevTeacher: Teacher) : DialogFragme
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProviders.of(this).get(EditTeacherDialogViewModel::class.java)
-
+        teachersLiveData = viewModel.getTeachers()
         //set previous values
         setPrevValues()
 
@@ -54,6 +56,20 @@ class EditTeacherDialogFragment(private var prevTeacher: Teacher) : DialogFragme
         //submit button
         submit.setOnClickListener { v ->
             if (nameInput.text.toString() != "") {
+
+                for (t in teachersLiveData.value!!) {
+                    if ((t.name == nameInput.text.toString()) && (t.name != prevTeacher.name)){
+                            val snack = Snackbar.make(v, "Teacher ${t.name} already exist!!", Snackbar.LENGTH_LONG)
+                            snack.view.setBackgroundColor(
+                                ContextCompat.getColor(
+                                    activity!!,
+                                    android.R.color.holo_red_light
+                                )
+                            )
+                            snack.show()
+                            return@setOnClickListener
+                        }
+                }
                 //create a teacher base on the input
                 val teacher = Teacher(
                     nameInput.text.toString(),
@@ -68,7 +84,7 @@ class EditTeacherDialogFragment(private var prevTeacher: Teacher) : DialogFragme
                 viewModel.editTeacher(prevTeacher, teacher, context!!).addOnSuccessListener {
                     val snack = Snackbar.make(
                         activity?.rootLayout!!,
-                        "Teacher ${teacher.name} added successfully",
+                        "Teacher ${teacher.name} edited successfully",
                         Snackbar.LENGTH_LONG
                     )
                     snack.view.setBackgroundColor(ContextCompat.getColor(activity!!, android.R.color.holo_blue_light))

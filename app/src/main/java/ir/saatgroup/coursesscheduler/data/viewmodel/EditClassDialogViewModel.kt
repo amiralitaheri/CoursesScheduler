@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 
 class EditClassDialogViewModel : ViewModel() {
     fun edit(prev: Classes, new: Classes,context: Context): Task<Void> {
+        Repository.deleteClasses(prev)
 
         val classInstancesLiveData = Repository.getClassInstances()
         val observer = Observer<List<ClassInstances>>{
@@ -31,7 +32,9 @@ class EditClassDialogViewModel : ViewModel() {
         }
         classInstancesLiveData.observe(context as AppCompatActivity,observer)
 
-        runBlocking { Repository.deleteClasses(prev) }
+
         return Repository.setClass(new)
     }
+
+    fun getClasses(): LiveData<MutableList<Classes>> = Repository.getClasses()
 }

@@ -3,6 +3,7 @@ package ir.saatgroup.coursesscheduler.data.viewmodel
 import android.content.Context
 import android.graphics.Bitmap
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.google.android.gms.tasks.Task
@@ -40,4 +41,6 @@ class EditTeacherDialogViewModel : ViewModel() {
         Repository.storeImage(image, id, context)
         return Repository.uploadImage(image, id)
     }
+
+    fun getTeachers(): LiveData<MutableList<Teacher>> = Repository.getTeachers()
 }
