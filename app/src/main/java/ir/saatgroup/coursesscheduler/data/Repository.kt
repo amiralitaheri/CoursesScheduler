@@ -178,6 +178,7 @@ object Repository {
                             "id" -> classesInstance.id = firebaseClassInstances[innerKey] as String
                             "teacher" -> classesInstance.teacher = firebaseClassInstances[innerKey] as String?
                             "classes" -> classesInstance.classes = firebaseClassInstances[innerKey] as String?
+                            "isRegistered" -> classesInstance.isRegistered = firebaseClassInstances[innerKey] as Boolean
                             "timess" -> timess = firebaseClassInstances[innerKey] as List<MutableMap<String, Objects>>?
                             else -> Log.e("firebase", "extra key value for ClassInstances: $key , $innerKey")
                         }
@@ -217,72 +218,6 @@ object Repository {
         return db.collection("allClassInstances").document(user?.uid!!).update(updates).addOnSuccessListener {
             classInstancesLiveData.value?.remove(classInstance)
             classInstancesLiveData.value = classInstancesLiveData.value
-        }
-    }
-
-    fun registerClass(classInstances: ClassInstances): Task<Void> {
-        val data = hashMapOf(
-            classInstances.id to classInstances
-        )
-        return db.collection("userClassInstances").document(user?.uid!!).set(data, SetOptions.merge())
-            .addOnSuccessListener {
-                registeredClassesLiveData.value?.add(classInstances)
-                registeredClassesLiveData.value = registeredClassesLiveData.value
-            }
-    }
-
-    fun getRegisteredClasses(): LiveData<MutableList<ClassInstances>> {
-        val classInstancesSet = mutableListOf<ClassInstances>()
-        db.collection("userClassInstances").document(user?.uid!!).get()
-            .addOnSuccessListener { documentSnapshot ->
-                for (key in documentSnapshot.data!!.keys) {
-                    val firebaseClassInstances = documentSnapshot.data!![key] as MutableMap<String, Objects>
-                    val classesInstance = ClassInstances()
-                    var timess: List<MutableMap<String, Objects>>? = null
-                    for (innerKey in firebaseClassInstances.keys) {
-                        when (innerKey) {
-                            "id" -> classesInstance.id = firebaseClassInstances[innerKey] as String
-                            "teacher" -> classesInstance.teacher = firebaseClassInstances[innerKey] as String?
-                            "classes" -> classesInstance.classes = firebaseClassInstances[innerKey] as String?
-                            "timess" -> timess = firebaseClassInstances[innerKey] as List<MutableMap<String, Objects>>?
-                            else -> Log.e("firebase", "extra key value for ClassInstances: $key , $innerKey")
-                        }
-                        val timeList = mutableListOf<Time>()
-                        if (timess != null) {
-                            for (tim in timess) {
-                                val time = Time()
-                                for (timeKey in tim.keys) {
-                                    when (timeKey) {
-                                        "day" -> time.day = tim[timeKey] as Int
-                                        "startHour" -> time.startHour = tim[timeKey] as Int
-                                        "endHour" -> time.endHour = tim[timeKey] as Int
-                                        "week" -> time.week = tim[timeKey] as String
-                                    }
-                                }
-                                timeList.add(time)
-                            }
-                        }
-                        classesInstance.timess = timeList
-                    }
-                    classInstancesSet.add(classesInstance)
-                }
-                registeredClassesLiveData.value = classInstancesSet
-            }
-            .addOnFailureListener {
-                Log.e("firebase", "Failed to retrieve classInstances")
-            }
-
-        return classInstancesLiveData
-    }
-
-    fun deleteRegisteredClass(classInstance: ClassInstances): Task<Void> {
-
-        val updates = hashMapOf<String, Any>(
-            classInstance.id to FieldValue.delete()
-        )
-        return db.collection("userClassInstances").document(user?.uid!!).update(updates).addOnSuccessListener {
-            registeredClassesLiveData.value?.remove(classInstance)
-            registeredClassesLiveData.value = registeredClassesLiveData.value
         }
     }
 
