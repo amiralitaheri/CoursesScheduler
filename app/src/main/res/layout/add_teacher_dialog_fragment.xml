@@ -11,40 +11,45 @@
             android:layout_height="wrap_content"
             android:id="@+id/textView4"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp" android:textSize="24sp"
-            app:layout_constraintTop_toTopOf="@+id/idealTermInput" app:layout_constraintBottom_toBottomOf="@+id/idealTermInput"/>
+            android:layout_marginStart="8dp" android:textSize="14sp"
+            app:layout_constraintTop_toTopOf="@+id/idealTermInput"
+            app:layout_constraintBottom_toBottomOf="@+id/idealTermInput"/>
     <TextView
             android:text="@string/birthYear"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/textView14"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp" android:textSize="24sp"
-            app:layout_constraintTop_toTopOf="@+id/unitsInput" app:layout_constraintBottom_toBottomOf="@+id/unitsInput"/>
+            android:layout_marginStart="8dp" android:textSize="14sp"
+            app:layout_constraintTop_toTopOf="@+id/unitsInput"
+            app:layout_constraintBottom_toBottomOf="@+id/unitsInput"/>
     <TextView
             android:text="@string/email"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/textView15"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp" android:textSize="24sp"
-            app:layout_constraintTop_toTopOf="@+id/emailInput" app:layout_constraintBottom_toBottomOf="@+id/emailInput"/>
+            android:layout_marginStart="8dp" android:textSize="14sp"
+            app:layout_constraintTop_toTopOf="@+id/emailInput"
+            app:layout_constraintBottom_toBottomOf="@+id/emailInput"/>
     <TextView
             android:text="@string/degree"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/textView12"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp" android:textSize="24sp"
-            app:layout_constraintTop_toTopOf="@+id/stageInput" app:layout_constraintBottom_toBottomOf="@+id/stageInput"/>
+            android:layout_marginStart="8dp" android:textSize="14sp"
+            app:layout_constraintTop_toTopOf="@+id/stageInput"
+            app:layout_constraintBottom_toBottomOf="@+id/stageInput"/>
     <TextView
             android:text="@string/discipline"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/textView13"
             app:layout_constraintStart_toStartOf="parent"
-            android:layout_marginStart="8dp" android:textSize="24sp"
-            app:layout_constraintTop_toTopOf="@+id/disciplineInput" app:layout_constraintBottom_toBottomOf="@+id/disciplineInput"/>
+            android:layout_marginStart="8dp" android:textSize="14sp"
+            app:layout_constraintTop_toTopOf="@+id/disciplineInput"
+            app:layout_constraintBottom_toBottomOf="@+id/disciplineInput"/>
     <TextView
             android:text="@string/name"
             android:layout_width="wrap_content"
@@ -52,7 +57,7 @@
             android:id="@+id/textView11"
             app:layout_constraintStart_toStartOf="parent"
             android:layout_marginStart="8dp"
-            android:textSize="24sp"
+            android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@+id/nameInput" app:layout_constraintTop_toTopOf="@+id/nameInput"/>
     <EditText
             android:layout_width="0dp"
